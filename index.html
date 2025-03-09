@@ -88,8 +88,23 @@
             let progressBar = document.getElementById("progress");
             progressBar.style.width = Math.min((bmi / 40) * 100, 100) + "%"; // Normalize width
             progressBar.className = "progress " + colorClass;
+
+            // ✅ Send data to Google Sheets
+            fetch('https://script.google.com/macros/s/AKfycbxDYiXvh1XcBSlVh1HxVTQArE91uW167N7WONWdTeVUSPgiuxyt5hDW3o5sks4qRdo/exec', {  // Replace this with your actual Web App URL
+                method: 'POST',
+                body: JSON.stringify({
+                    height: `${feet} ft ${inches} in`,
+                    weight: weight,
+                    bmi: bmi.toFixed(2),
+                    category: category
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.text())
+              .then(data => console.log("Data sent successfully:", data))
+              .catch(error => console.error("Error sending data:", error));
         }
     </script>
-
 </body>
 </html>

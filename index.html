@@ -19,92 +19,91 @@
     </style>
 </head>
 <body>
+
+<!-- Visitor Counter -->
 <div style="text-align: center; margin-top: 10px;">
-  <img src="https://visitor-badge.io/status?path=samitag1/BMI-calculator" alt="Visitor Count">
+    <img src="https://komarev.com/ghpvc/?username=samitag1&label=Visitors&color=blue&style=flat-square" alt="Visitor Count">
 </div>
-    <div class="container">
-        <h2>बी.एम.आई. (BMI) क्याल्कुलेटर</h2>
-        <label>तौल (kg):</label>
-        <input type="number" id="weight" placeholder="तौल kg मा लेख्नुहोस्">
 
-        <label>उचाइ (feet):</label>
-        <input type="number" id="feet" placeholder="उचाइ (feet)">
+<!-- BMI Calculator -->
+<div class="container">
+    <h2>बी.एम.आई. (BMI) क्याल्कुलेटर</h2>
+    <label>तौल (kg):</label>
+    <input type="number" id="weight" placeholder="तौल kg मा लेख्नुहोस्">
 
-        <label>उचाइ (inches):</label>
-        <input type="number" id="inches" placeholder="इन्च">
+    <label>उचाइ (feet):</label>
+    <input type="number" id="feet" placeholder="उचाइ (feet)">
 
-        <button onclick="calculateBMI()">गणना गर्नुहोस्</button>
+    <label>उचाइ (inches):</label>
+    <input type="number" id="inches" placeholder="इन्च">
 
-        <p id="result"></p>
-        <div class="progress-bar">
-            <div id="progress" class="progress"></div>
-        </div>
-        <p id="advice"></p>
+    <button onclick="calculateBMI()">गणना गर्नुहोस्</button>
+
+    <p id="result"></p>
+    <div class="progress-bar">
+        <div id="progress" class="progress"></div>
     </div>
+    <p id="advice"></p>
+</div>
 
-    <script>
-        function calculateBMI() {
-            let weight = parseFloat(document.getElementById("weight").value);
-            let feet = parseFloat(document.getElementById("feet").value);
-            let inches = parseFloat(document.getElementById("inches").value);
+<script>
+    function calculateBMI() {
+        let weight = parseFloat(document.getElementById("weight").value);
+        let feet = parseFloat(document.getElementById("feet").value);
+        let inches = parseFloat(document.getElementById("inches").value);
 
-            if (isNaN(weight) || isNaN(feet) || isNaN(inches)) {
-                alert("कृपया सबै विवरणहरू सही रूपमा भर्नुहोस्।");
-                return;
-            }
-
-            // Convert height to meters
-            let totalInches = (feet * 12) + inches;
-            let heightMeters = totalInches * 0.0254;
-
-            // Calculate BMI
-            let bmi = weight / (heightMeters * heightMeters);
-            let category = "";
-            let advice = "";
-            let colorClass = "";
-
-            if (bmi < 18.5) {
-                category = "Underweight";
-                advice = "तपाईंको तौल कम छ। पौष्टिक भोजन खानुहोस्, प्रोटीनयुक्त खाना बढाउनुहोस्, र नियमित रूपमा व्यायाम गर्नुहोस्।";
-                colorClass = "underweight";
-            } else if (bmi >= 18.5 && bmi < 24.9) {
-                category = "Normal weight";
-                advice = "तपाईंको तौल सामान्य छ! स्वस्थ खानपानलाई निरन्तरता दिनुहोस् र नियमित रूपमा शारीरिक गतिविधि गरिरहनुहोस्।";
-                colorClass = "normal";
-            } else if (bmi >= 25 && bmi < 29.9) {
-                category = "Overweight";
-                advice = "तपाईंको तौल बढी छ। स्वस्थ आहार अपनाउनुहोस्, मीठा खानेकुरा कम गर्नुहोस्, र नियमित रूपमा कसरत गर्नुहोस्।";
-                colorClass = "overweight";
-            } else {
-                category = "Obese";
-                advice = "तपाईंको तौल धेरै बढी छ। डाइट सन्तुलित पार्नुहोस्, प्रोसेस्ड फूड कम गर्नुहोस्, र दैनिक कम्तीमा ३० मिनेट व्यायाम गर्नुहोस्।";
-                colorClass = "obese";
-            }
-
-            document.getElementById("result").innerHTML = `तपाईंको BMI: ${bmi.toFixed(2)} (${category})`;
-            document.getElementById("advice").innerHTML = advice;
-
-            // Update progress bar
-            let progressBar = document.getElementById("progress");
-            progressBar.style.width = Math.min((bmi / 40) * 100, 100) + "%"; // Normalize width
-            progressBar.className = "progress " + colorClass;
-
-            // ✅ Send data to Google Sheets
-            fetch('https://script.google.com/macros/s/AKfycbxDYiXvh1XcBSlVh1HxVTQArE91uW167N7WONWdTeVUSPgiuxyt5hDW3o5sks4qRdo/exec', {  // Replace this with your actual Web App URL
-                method: 'POST',
-                body: JSON.stringify({
-                    height: `${feet} ft ${inches} in`,
-                    weight: weight,
-                    bmi: bmi.toFixed(2),
-                    category: category
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.text())
-              .then(data => console.log("Data sent successfully:", data))
-              .catch(error => console.error("Error sending data:", error));
+        if (isNaN(weight) || isNaN(feet) || isNaN(inches)) {
+            alert("कृपया सबै विवरणहरू सही रूपमा भर्नुहोस्।");
+            return;
         }
-    </script>
+
+        // Convert height to meters
+        let totalInches = (feet * 12) + inches;
+        let heightMeters = totalInches * 0.0254;
+
+        // Calculate BMI
+        let bmi = weight / (heightMeters * heightMeters);
+        let category = "";
+        let advice = "";
+        let colorClass = "";
+
+        if (bmi < 18.5) {
+            category = "Underweight";
+            advice = "तपाईंको तौल कम छ। पौष्टिक भोजन खानुहोस्, प्रोटीनयुक्त खाना बढाउनुहोस्, र नियमित रूपमा व्यायाम गर्नुहोस्।";
+            colorClass = "underweight";
+        } else if (bmi >= 18.5 && bmi < 24.9) {
+            category = "Normal weight";
+            advice = "तपाईंको तौल सामान्य छ! स्वस्थ खानपानलाई निरन्तरता दिनुहोस् र नियमित रूपमा शारीरिक गतिविधि गरिरहनुहोस्।";
+            colorClass = "normal";
+        } else if (bmi >= 25 && bmi < 29.9) {
+            category = "Overweight";
+            advice = "तपाईंको तौल बढी छ। स्वस्थ आहार अपनाउनुहोस्, मीठा खानेकुरा कम गर्नुहोस्, र नियमित रूपमा कसरत गर्नुहोस्।";
+            colorClass = "overweight";
+        } else {
+            category = "Obese";
+            advice = "तपाईंको तौल धेरै बढी छ। डाइट सन्तुलित पार्नुहोस्, प्रोसेस्ड फूड कम गर्नुहोस्, र दैनिक कम्तीमा ३० मिनेट व्यायाम गर्नुहोस्।";
+            colorClass = "obese";
+        }
+
+        document.getElementById("result").innerHTML = `तपाईंको BMI: ${bmi.toFixed(2)} (${category})`;
+        document.getElementById("advice").innerHTML = advice;
+
+        // Update progress bar
+        let progressBar = document.getElementById("progress");
+        progressBar.style.width = Math.min((bmi / 40) * 100, 100) + "%";
+        progressBar.className = "progress " + colorClass;
+
+        // Send Data to Google Sheets
+        fetch("https://script.google.com/macros/s/AKfycbxDYiXvh1XcBSlVh1HxVTQArE91uW167N7WONWdTeVUSPgiuxyt5hDW3o5sks4qRdo/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ weight: weight, height: totalInches, bmi: bmi.toFixed(2), category: category })
+        })
+        .then(response => response.text())
+        .then(data => console.log("Success:", data))
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+
 </body>
 </html>
